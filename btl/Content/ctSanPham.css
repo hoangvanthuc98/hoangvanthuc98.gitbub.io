@@ -1,0 +1,40 @@
+﻿*{
+    margin:0;
+    padding:0;
+}
+
+#add {
+    margin-left: 645px;
+    margin-top: 20px;
+}
+.breadcrumb {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: .75rem 1rem;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+    list-style: none;
+    background-color: 
+    #e9ecef;
+    border-radius: .25rem;
+    font-size: 14px;
+    padding-left: 190px;
+
+}
+.thongso{
+    padding-left:30px;
+    line-height:35px;
+}
+.thongso span{
+    color:red;
+    font-size: 18px;
+    line-height: 35px;
+}
+.gray{
+    margin-bottom: 0;
+    padding-left: 0;
+    text-align:center;
+    background:rgba(221, 224, 222, 0.29); 
+}

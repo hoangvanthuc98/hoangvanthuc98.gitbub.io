@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6a990cf5c0e44d07b20a210ac1284190" Name="Diagram1">
+        <EntityTypeShape EntityType="dbtecotecModel.ChiTietHoaDon" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbtecotecModel.HoaDon" Width="1.5" PointX="3" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbtecotecModel.LoaiSanPham" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbtecotecModel.NguoiDung" Width="1.5" PointX="0.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbtecotecModel.PhanQuyen" Width="1.5" PointX="1.5" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbtecotecModel.SanPham" Width="1.5" PointX="3" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbtecotecModel.sysdiagram" Width="1.5" PointX="5.75" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbtecotecModel.ThongSoKiThuat" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbtecotecModel.ThongSoSanPham" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="dbtecotecModel.fk4" ManuallyRouted="false" />
+        <AssociationConnector Association="dbtecotecModel.fk5" ManuallyRouted="false" />
+        <AssociationConnector Association="dbtecotecModel.fk3" ManuallyRouted="false" />
+        <AssociationConnector Association="dbtecotecModel.fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="dbtecotecModel.fk2" ManuallyRouted="false" />
+        <AssociationConnector Association="dbtecotecModel.fk6" ManuallyRouted="false" />
+        <AssociationConnector Association="dbtecotecModel.fk7" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

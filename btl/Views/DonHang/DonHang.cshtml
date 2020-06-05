@@ -1,0 +1,141 @@
+﻿@using btl.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<HoaDon>
+@{
+    Method mt = new Method();
+    double tongtien = 0;
+    int dem = 0;
+}
+@{
+    ViewBag.Title = "Đơn hàng";
+    Layout = "~/Views/Layout/NguoiDungLayout.cshtml";
+}
+<link href="~/Content/HoaDon.css" rel="stylesheet" />
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<div class="container text-center">
+    <h2><u>Đơn hàng của bạn</u></h2>
+    <div class="col-md-4 offset-4">
+        @using (Html.BeginForm("TimKiemHD", "DonHang"))
+            {
+            <div class="input-group" id="timkiemDate">
+                <input name="datetimkiem" type="date" class="form-control">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Lọc theo ngày</button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="title">
+        <div class="l-3">Mã HĐ</div>
+        <div class="l-1">Ngày lập</div>
+        <div class="l-30">Tên sản phẩm</div>
+        <div class="l-1">Số lượng</div>
+        <div class="l-15">Đơn giá</div>
+        <div class="l-15">Trạng thái</div>
+        <div class="l-2">Giá trị đơn hàng</div>
+        <div class="cl"></div>
+    </div>
+    @foreach (var i in Model)
+    {
+        string s = (@i.TrangThai == true) ? "Đã Nhận hàng" : "Đang xử lý";
+        var lst = mt.GetChiTietHoaDonByID(i.MaHD);
+        double giaTri = 0;
+        foreach(var item in lst)
+        {
+            giaTri += item.SoLuong * item.DonGia;
+        }
+        <div class="hd">
+            @foreach (var item in lst)
+            {
+
+                if (@i.TrangThai != true)
+                {
+                    tongtien = tongtien + (item.SoLuong * item.DonGia);
+                }
+                var sp = mt.GetSanPhamById(item.MaSP);
+                if (@dem == 0)
+                {
+                    <div class="l-3 w">@i.MaHD</div>
+                }
+                else
+                {
+                    <div class="l-3 w h">@i.MaHD</div>
+                }
+
+                if (@dem == 0)
+                {
+                    <div class="l-1 w">@i.NgayLap.ToString("dd/MM/yyyy")</div>
+                }
+                else
+                {
+                    <div class="l-1 w h">@i.NgayLap.ToString("dd/MM/yyyy")</div>
+                }
+
+                <div class="l-30 w">@sp.TenSP</div>
+                <div class="l-1 w">@item.SoLuong</div>
+                <div class="l-15 w">@String.Format("{0:0,0}", item.DonGia) &nbsp<u><i>đ</i></u></div>
+                if (@dem == 0)
+                {
+
+                    if (s == "Đã Nhận hàng")
+                    {
+                        <div class="l-15 w" style="color:forestgreen">@s</div>
+                    }
+                    else
+                    {
+                        <div class="l-15 w" style="color:red">@s</div>
+                    }
+                }
+                else
+                {
+                    <div class="l-15 w h" >@s</div>
+                }
+                if (@dem == 0)
+                {
+                    <div class="l-2 w">@String.Format("{0:0,0}", giaTri) VNĐ</div>
+                    { dem++; }
+                }
+                else
+                {
+                    <div class="l-2 w h">@String.Format("{0:0,0}", giaTri)</div>
+                }
+                <div class="cl"></div>
+                
+            }
+        </div>
+        {dem = 0;}
+    }
+    <div class="phantrang">
+        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("DonHang", new { page = page}))
+    </div>
+    @*<div style="float:right"><u><b>Tổng tiền phải trả : </b></u>: @String.Format("{0:0,0}", tongtien) VNĐ</div>*@
+</div>
+<div class="jumbotron"></div>
+
+
+@*<table border="1" width="100%" style="text-align:center">
+        <tr>
+            <td>tên sản phẩm</td>
+            <td>số lượng</td>
+            <td>đơn giá</td>
+            <td>trạng thái</td>
+        </tr>
+
+        @foreach (var i in Model)
+        {
+            var lst = mt.GetChiTietHoaDonByID(i.MaHD);
+            foreach (var item in lst)
+            {
+                tongtien = tongtien + (item.SoLuong * item.DonGia);
+                var sp = mt.GetSanPhamById(item.MaSP);
+                <tr>
+                    <td>@sp.TenSP</td>
+                    <td>@item.SoLuong</td>
+                    <td>@item.DonGia</td>
+                </tr>
+            }
+
+        }
+        <tr>Tổng tiền : @tongtien</tr>
+    </table>*@

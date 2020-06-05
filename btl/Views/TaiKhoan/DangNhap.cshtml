@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "Đăng Nhập";
+    Layout = "~/Views/Layout/NguoiDungLayout.cshtml";
+}
+
+<div class="container">
+    @*@using (Html.BeginForm(new { @class = "form-horizontal" }))
+    {*@<br />
+        <div class="panel-heading">
+            <h3 class="text-center"> Đăng nhập vào <strong class="text-custom">Tecostore</strong> </h3>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6 offset-3">
+                <label for="taikhoan">Tài Khoản :</label>
+                <input type="text" class="form-control" placeholder="nhập tài khoản" id="taikhoan" name="txtTaiKhoan">
+            </div>
+        </div>
+            <div class="form-group">
+                <div class="col-md-6 offset-3">
+                    <label for="pwd">Mật Khẩu :</label>
+                    <input type="password" class="form-control" placeholder="nhập mật khẩu" id="pwd" name="txtMatKhau">
+                </div>
+            </div>
+            @*<div class="form-group form-check">
+                <div class="col-md-6 offset-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox"> Remember me
+                    </label>
+                </div>
+
+            </div>*@
+            <div class="form-group">
+                <div class="col-md-6 offset-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary" id="btn_dangnhap">Đăng nhập</button>
+                            <a href="@Url.Action("ForgotPassWord","TaiKhoan")" class="text-dark"><i class="fa fa-lock m-r-5" style="margin-left:85px;"></i> Quên mật khẩu?</a>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+    <div class="panel-heading">
+        <p class="text-center"> <a href="/TaiKhoan/DangKy">>> <b>Đăng ký tài khoản</b> <<</a> </p>
+    </div>
+    @*}*@
+</div>
+<script src="~/Assets/plugins/notifyjs/js/notify.js"></script>
+<script src="~/Assets/plugins/notifications/notify.min.js"></script>
+<script src="~/Assets/plugins/notifications/style.js"></script>
+<script>
+    $('#btn_dangnhap').on('click', function () {
+        var frm = new FormData();
+        console.log(frm);
+        frm.append("txtTaiKhoan", $("#taikhoan").val());
+        frm.append("txtMatKhau", $("#pwd").val());
+        $.ajax({
+            url: '/TaiKhoan/DangNhap',
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: frm,
+            success: function (data) {
+                
+                if (data == "True" || data == "true" || data == true) {
+                    $.notify('Đăng nhập thành công !', {
+                        style: 'notify',
+                        className: 'success'
+                    });
+                    setTimeout(function () {
+                        window.location.href = "/Home/Index";
+                    }, 1500);
+                } else {
+                    $("input[type=text]").val("");
+                    $("input[type=password]").val("");
+                    $.notify('Tài khoản hoặc mật khẩu không chính xác !', {
+                        style: 'notify',
+                        className: 'error'
+                    });
+                }
+
+            }
+        });
+    });
+</script>
+
+@*$.notify.addStyle('notify', {
+    html: "<div><span data-notify-text /></div>",
+    classes: {
+        base: {
+            "font-weight": "bold",
+            "width": "350px",
+            "height": "100px",
+            "text-shadow": "0 1px 0 rgba(255, 255, 255, 0.5)",
+            "background-color": "#fcf8e3",
+            "border": "1px solid #fbeed5",
+            "border-radius": "4px",
+            "white-space": "nowrap",
+            "display": "flex",
+            "justify-content": "center",
+            "align-items": "center",
+            "background-repeat": "no-repeat",
+            "background-position": "3px 7px"
+        },
+        error: {
+            "color": "#B94A48",
+            "background-color": "#F2DEDE",
+            "border-color": "#EED3D7",
+        },
+        success: {
+            "color": "#468847",
+            "background-color": "#DFF0D8",
+            "border-color": "#D6E9C6",
+
+        },
+    }
+});*@

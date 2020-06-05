@@ -1,0 +1,169 @@
+﻿
+@using btl.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<HoaDon>
+@{
+    ViewBag.Title = "Đơn hàng";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<link href="~/Assets/plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" />
+<style>
+    .input-group {
+        position: relative;
+    }
+    .bt {
+        position: absolute;
+        top: 0;
+    }
+</style>
+@section TimKiemHoaDon{
+    <div>
+        <div>
+            @using (Html.BeginForm("TimKiemByMaHD", "HoaDonAdmin"))
+            {
+                <div class="input-group mb-3">
+                    <input id="mahd" name="mahd" type="number" class="form-control" placeholder="tìm theo mã hóa đơn">
+                    <button class="btn btn-success bt" type="submit">Tìm kiếm</button>
+                </div>
+            }
+        </div>
+        <div>
+            @using (Html.BeginForm("TimKiemByNgayDH", "HoaDonAdmin"))
+            {
+                <div class="input-group" id="timkiemDate">
+                    <input id="datetimkiem" name="datetimkiem" type="date" class="form-control">
+                    <button class="btn btn-primary bt" type="submit">Lọc theo ngày</button>
+                    @*<div class="input-group-append">
+                    </div>*@
+                </div>
+            }
+        </div>
+
+    </div>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().MaHD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().NgayLap)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().TrangThai)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().NguoiDung.Ten)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().NguoiDung.DiaChi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().NguoiDung.SDT)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.MaHD)
+            </th>
+            <td>
+                @item.NgayLap.ToString("dd/MM/yyyy")
+            </td>
+            @using (Html.BeginForm("Edit", "HoaDonAdmin", new { @id = item.MaHD, @url = Request.Url }))
+            {
+                <td>
+                    @if (item.TrangThai == true)
+                    {
+                        <p>Đã nhận hàng</p>
+                    }
+                    else
+                    {
+                        <select name="trangthai">
+                            <option value="Đã nhận hàng">Đã nhận hàng</option>
+                            <option selected value="Đang xử lý">Đang xử lý</option>
+                        </select>
+                            <input type="submit" value="Cập nhật" class="btn btn-default" />
+                    }
+                    
+                </td>
+            }
+            <th>
+                @Html.DisplayFor(modelItem => item.NguoiDung.Ten)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.NguoiDung.DiaChi)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.NguoiDung.SDT)
+            </th>
+            <td>
+                @Html.ActionLink("Chi Tiết", "Details", new { id = item.MaHD })
+                @if (item.TrangThai != true)
+                {
+                    <a href="#" onclick="btn_delete('@item.MaHD')"> | Xóa</a>
+                }
+            </td>
+        </tr>
+    }
+</table>
+<div class="phantrang">
+    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("TimKiemByMaHD", new { page = page }))
+</div>
+<script src="~/Assets/plugins/notifications/notify.min.js"></script>
+<script src="~/Assets/plugins/notifications/style.js"></script>
+<script src="~/Assets/plugins/notifyjs/js/notify.js"></script>
+<script src="~/Assets/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
+<script src="~/Assets/pages/jquery.sweet-alert.init.js"></script>
+<script>
+    function btn_delete(station_id) {
+        swal({
+            title: "Chú ý !!! ",
+            text: "Bạn thực sự muốn xóa hóa đơn ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Xóa",
+            cancelButtonText: "Hủy",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "/HoaDonAdmin/Delete",
+                    type: "POST",
+                    data: {
+                        id: station_id,
+                    },
+                    success: function (data) {
+                        if (data == "True" || data == "true" || data == true) {
+                            setTimeout(function () {
+                                window.location.href = "/HoaDonAdmin/Index";
+                            }, 0);
+                        } else {
+                            setTimeout(function () {
+                                window.location.href = "/HoaDonAdmin/Index";
+                            }, 0);
+
+                        }
+
+                    },
+                    error: function (xhr, status) {
+
+                    }
+                });
+                swal.close();
+            } else {
+                swal.close();
+            }
+        });
+    }
+</script>
+
+
+

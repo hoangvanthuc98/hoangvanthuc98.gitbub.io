@@ -1,0 +1,41 @@
+﻿@if (ViewBag.tenND == "")
+{
+    <a class="nav-link text-body" href="@Url.Action("DangNhap","TaiKhoan")"><i class="text-warning fas fa-award"></i> đăng nhập</a>
+}
+else
+{
+    <ul class="nav">
+        <li class="dropdown">
+            <a class="btn dropdown-toggle" data-toggle="dropdown">
+                <i class="halflings-icon white user"></i> @ViewBag.tenND
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                @if (ViewBag.MaQuyen == 1)
+                {
+                    <li class="tk"><a href="@Url.Action("Index","SanPhamAdmin")"><i class="halflings-icon user"></i>Chức năng quản trị</a></li>
+                }
+                <li class="tk"><a href="@Url.Action("ChangePassWord", "TaiKhoan")"><i class="halflings-icon off"></i>Đổi mật khẩu</a></li>
+                <li class="tk"><a href="@Url.Action("ThongTin", "TaiKhoan")"><i class="halflings-icon off"></i>Thông tin cá nhân</a></li>
+                <li class="tk"><a href="@Url.Action("LogOut","TaiKhoan")"><i class="halflings-icon off"></i>Đăng xuất</a></li>
+            </ul>
+        </li>
+    </ul>
+}
+<style>
+    .tk{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:35px;
+        border-bottom:dotted 1px;
+        
+    }
+    .tk a{
+        text-decoration:none;
+    }
+    .tk:hover{
+        background-color:#FFF8DC;
+    }
+</style>
+

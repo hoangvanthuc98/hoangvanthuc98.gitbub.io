@@ -1,0 +1,113 @@
+﻿@using btl.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<SanPham>
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Views/Layout/NguoiDungLayout.cshtml";
+}
+<link href="~/Content/dsSanPham.css" rel="stylesheet" />
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{Method mt = new Method();
+    var list = mt.GetListLoaiSP();
+    //var lstDS = mt.GetListSanPham();
+}
+<div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="@Url.Action("XemDanhSachSanPham", "SanPham")">Xem danh sách sản phẩm</a></li>
+        </ol>
+    </nav>
+</div>
+@{
+    List<int> maLsp = new List<int>();
+    foreach (var sp in Model)
+    {
+        maLsp.Add(sp.MaLSP);
+        break;
+    }
+    foreach (var sp in Model)
+    {
+        if (maLsp.Contains(sp.MaLSP)) { continue; }
+        else
+        {
+            maLsp.Add(sp.MaLSP);
+        }
+    }
+}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2 shadow section__category p-3 gray">
+            <ul>
+                <li class="mnl"><a href="@Url.Action("XemDanhSachSanPham","SanPham")">Tất cả các sản phẩm</a></li>
+                @foreach (var item in list)
+                {
+                    <li class="mnl"><a href="@Url.Action("XemDanhSachSanPham","SanPham",new {@idsp=item.MaLSP })">@item.TenLSP</a></li>
+                }
+            </ul>
+        </div>
+        <div class="col-sm-10">
+            @if (maLsp.Count != 1)
+            {
+                <div>Tất cả các sản phẩm</div>
+            }
+            else
+            {
+                var tenLSP = mt.GetTenLoaiSPById((int)maLsp[0]);
+                <div>@tenLSP</div>
+            }
+
+            <div class="noidung">
+                @foreach (var item in Model)
+                {
+                    if (item.Active == true)
+                    {
+                        <div class="card" onclick="CT(@item.MaSP)">
+                            <img class="card-img-top" src="@Url.Content("~/images/"+ item.HinhAnh)" alt="">
+                            <div class="card-body">
+                                <p class="card-text">@item.TenSP</p>
+                                <div class="text-center">
+                                    @if (item.KhuyenMai == 0)
+                                    {
+                                        <p>Giá : @String.Format("{0:0,0}", @item.DonGia) VNĐ</p>
+                                    }
+                                    else
+                                    {                                      
+                                        <p>Giá : <strike style="font-size:10px">@String.Format("{0:0,0}", @item.DonGia)</strike>
+                                     <i style="color:red">@String.Format("{0:0,0}", (@item.DonGia) - (@item.DonGia * (@item.KhuyenMai) / 100)) VNĐ</i></p>
+                                    }
+
+                                    <div class="btn-group">
+                                        @*<div class="btn"><a href="@Url.Action("XemChiTietSanPham",new {@id=item.MaSP})"><i class="fa fa-eye"></i></a></div>*@
+                                        <div>
+                                            @using (Html.BeginForm("ThemGioHang", "GioHang", new { @id = item.MaSP, @strUrl = Request.Url.ToString() }))
+                                            {
+                                                <input type="submit" class="btn btn-success" value="Thêm vào giỏ hàng" />
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="phantrang">
+        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("XemDanhSachSanPham", new { page = page }))
+    </div>
+</div>
+<script>
+    function CT(id) {
+        var url = '@Url.Action("XemChiTietSanPham", new { id = "__id__" })';
+        window.location.href = url.replace('__id__', id);
+    }
+</script>
+
+
+

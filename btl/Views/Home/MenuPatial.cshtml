@@ -1,0 +1,66 @@
+﻿@using btl.Models;
+@model List<LoaiSanPham>
+<div class="multi-column columns-2">
+    <div class="row">
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <ul class="multi-column-dropdown">
+                <li class="tt"><a href="@Url.Action("XemDanhSachSanPham","SanPham")">Tất cả sản phẩm</a></li>
+            </ul>
+        </div>
+        @foreach (var item in Model)
+        {
+            Method mt = new Method();
+            var id = @item.MaLSP;
+            var lst = @mt.GetByLoaiSanPhamId(id);
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <ul class="multi-column-dropdown">
+                    <li class="tt"><a href="@Url.Action("XemDanhSachSanPham","SanPham",new {@idsp=id })">@item.TenLSP</a></li>
+                    <li class="devider"></li>
+                    @if (lst.Count < 5)
+                    {
+                        foreach (var i in lst)
+                        {
+                            if (i.Active == true)
+                            {
+                                <li class="dropdown-item"> <a href="@Url.Action("XemChiTietSanPham","SanPham",new {@id=i.MaSP})">@i.TenSP</a></li>
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        int d = 0;
+                        foreach (var i in lst)
+                        {
+                            if (d == 5) { break; }
+                            if (i.Active == true)
+                            {
+                                <li class="dropdown-item"> <a href="@Url.Action("XemChiTietSanPham","SanPham",new {@id=i.MaSP})">@i.TenSP</a></li>
+                                d++;
+                            }
+
+                        }
+                        <li class="dropdown-item" style="text-align:center"><a href="@Url.Action("XemDanhSachSanPham","SanPham",new {@idsp=id })">......</a></li>
+
+                    }
+                    @*@foreach (var i in lst)
+                        {
+                            <li class="dropdown-item"> <a href="#">@i.TenSP</a></li>
+                        }*@
+
+                </ul>
+            </div>
+        }
+
+        @*<div class="col-sm-3 col-md-3 col-lg-3">
+                <ul class="multi-column-dropdown">
+                    <li class="tt"><a>thiết bị đo lường hiện đại</a></li>
+                    <li class="devider"></li>
+                    <li class="dropdown-item"> <a href="#">Link 1</a></li>
+                    <li class="dropdown-item"> <a href="#">Link 2</a></li>
+                    <li class="dropdown-item"><a href="#">Link 3</a> </li>
+                </ul>
+            </div>*@
+
+    </div>
+</div>

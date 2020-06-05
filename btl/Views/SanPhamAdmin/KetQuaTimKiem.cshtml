@@ -1,0 +1,156 @@
+﻿
+@*@model IEnumerable<btl.Models.SanPham>*@
+@using btl.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<SanPham>
+@{
+    ViewBag.Title = "Kết quả tìm kiếm";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<link href="~/Assets/plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" />
+<div>
+    @using (Html.BeginForm("KetQuaTimKiem", "SanPhamAdmin", FormMethod.Post))
+    {
+        <div class="input-group" id="timkiem">
+
+            <input name="txttimkiem" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">tìm kiếm</button>
+            </div>
+        </div>
+    }
+</div>
+
+<p>
+    @Html.ActionLink("Thêm mới Sản Phẩm", "Create", "SanPhamAdmin", new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().TenSP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DonGia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().SoLuong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().HinhAnh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().LoaiSanPham.TenLSP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().KhuyenMai)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Active)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenSP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonGia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+            <td>
+                <img src="@Url.Content("~/images/"+item.HinhAnh)" width="60" height="60" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoaiSanPham.TenLSP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KhuyenMai)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Active)*@
+                @*<select name="trangthai">
+                    @if (item.Active == true)
+                {
+                        <option selected value="Đang bán">Đang bán</option>
+                        <option value="Dừng bán">Dừng bán</option>
+                    }
+                    else
+                    {
+                        <option value="Đang bán">Đang bán</option>
+                        <option selected value="Dừng bán">Dừng bán</option>
+                    }
+
+                </select>*@
+                @if (item.Active == true)
+                {
+                    <i style="color:forestgreen">Đang bán</i>
+                }
+                else
+                {
+                    <i style="color:red">Ngừng kinh doanh</i>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.MaSP }) |
+                @Html.ActionLink("Chi Tiết", "Details", new { id = item.MaSP }) |
+                <a href="#" onclick="btn_delete('@item.MaSP')">Xóa</a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="phantrang">
+    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+</div>
+<script src="~/Assets/plugins/notifications/notify.min.js"></script>
+<script src="~/Assets/plugins/notifications/style.js"></script>
+<script src="~/Assets/plugins/notifyjs/js/notify.js"></script>
+<script src="~/Assets/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
+<script src="~/Assets/pages/jquery.sweet-alert.init.js"></script>
+<script>
+    function btn_delete(station_id) {
+        swal({
+            title: "Chú ý !!! ",
+            text: "Bạn thực sự muốn xóa sản phẩm ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Xóa",
+            cancelButtonText: "Hủy",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "/SanPhamAdmin/Delete",
+                    type: "POST",
+                    data: {
+                        id: station_id,
+                    },
+                    success: function (data) {
+                        if (data == "True" || data == "true" || data == true) {
+                            setTimeout(function () {
+                                window.location.href = "/SanPhamAdmin/Index";
+                            }, 1500);
+                        } else {
+                        }
+                    },
+                    error: function (xhr, status) {     
+                    }
+                });
+                swal.close();
+            } else {
+                swal.close();
+            }
+        });
+    }
+</script>
+
+

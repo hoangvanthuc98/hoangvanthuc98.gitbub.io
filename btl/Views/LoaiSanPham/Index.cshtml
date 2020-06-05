@@ -1,0 +1,100 @@
+﻿@model IEnumerable<btl.Models.LoaiSanPham>
+
+@{
+    ViewBag.Title = "Loại sản phẩm";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+}
+
+<link href="~/Assets/plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" />
+<p>
+    @Html.ActionLink("Thêm mới", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TenLSP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MoTa)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TenLSP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MoTa)
+        </td>
+        <td>
+            @Html.ActionLink("Sửa", "Edit", new { id=item.MaLSP }) |
+            @*@Html.ActionLink("Xóa", "Delete", new { id=item.MaLSP })*@
+            <a href="#" onclick="btn_delete('@item.MaLSP','@Request.Url.ToString()')">Xóa</a>
+        </td>
+    </tr>
+}
+
+</table>
+<script src="~/Assets/plugins/notifications/notify.min.js"></script>
+<script src="~/Assets/plugins/notifications/style.js"></script>
+<script src="~/Assets/plugins/notifyjs/js/notify.js"></script>
+<script src="~/Assets/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
+<script src="~/Assets/pages/jquery.sweet-alert.init.js"></script>
+<script>
+    function btn_delete(station_id, station_id2) {
+        swal({
+            title: "Chú ý !!! ",
+            text: "Bạn thực sự muốn xóa loại sản phẩm này ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Xóa",
+            cancelButtonText: "Hủy",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "/LoaiSanPham/Delete",
+                    type: "POST",
+                    data: {
+                        id: station_id,
+                    },
+                    success: function (data) {
+                        if (data == "True" || data == "true" || data == true) {
+
+                            //$.notify('Xóa thành công !', {
+                            //    style: 'notify',
+                            //    className: 'success'
+                            //});
+                            setTimeout(function () {
+                                window.location.href = station_id2;
+                            },0);
+                        } else {
+                            setTimeout(function () {
+                                window.location.href = station_id2;
+                            }, 0);
+                            //$.notify('Xóa không thành công !', {
+                            //    style: 'notify',
+                            //    className: 'error'
+                            //});
+                        }
+
+                    },
+                    error: function (xhr, status) {
+                        //$.notify('Xóa không thành công !', {
+                        //    style: 'notify',
+                        //    className: 'error'
+                        //});
+                    }
+                });
+                swal.close();
+            } else {
+                swal.close();
+            }
+        });
+    }
+</script>
+

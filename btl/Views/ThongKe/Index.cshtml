@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "Thống kê";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+}
+<div class="col-md-4 col-md-6 offset-4">
+    @using (Html.BeginForm("TimKiem", "ThongKe"))
+    {
+        <div class="input-group" id="timkiemDate">
+           Từ ngày : <input id="dateStart" name="dateStart" type="date" class="form-control">
+           Đến ngày : <input id="dateEnd" name="dateEnd" type="date" class="form-control">          
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Thống kê</button>
+            </div>
+        </div>
+    }
+</div>
+
+<p>Các sản phẩm đã bán trong tháng: <i style="color:red">@ViewBag.time</i> </p>
+<div id="piechart" style="width: 1000px; height: 500px;"></div>
+<div id="chart_div" style="width: 1000px; height: 500px;"></div>
+<div id="error_msg"></div>
+@*<script src="~/Scripts/jquery-2.1.1.min.js"></script>*@
+<script type="text/javascript">
+    function jsonThongKe(handleData) {
+        $.ajax({
+            url: "/ThongKe/GetJsonData",
+            type: "GET",                   
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                handleData(result);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    setTimeout( function() {
+        google.load("visualization", "1", { packages: ["corechart"] });
+        
+    var tenSPs = [];
+    var soLuongBans = [];
+    var datas;
+    jsonThongKe(function (data) {
+        $.each(data, function (i, item) {
+            tenSPs.push([item.TenSP].toString());
+            soLuongBans.push([item.SoLuongBan]);
+
+            datas = data;
+        });
+        google.setOnLoadCallback(drawChartSp);
+        google.setOnLoadCallback(drawChart);      
+    });
+       
+    function drawChartSp() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'TenSP');
+        data.addColumn('number', 'SoLuongBan');
+
+        data.addRows(tenSPs.length);
+
+        for (var i = 0; i < tenSPs.length; i++) {
+            data.setCell(i, 0, tenSPs[i] + ' (' + soLuongBans[i] + ' sản phẩm)');
+            data.setCell(i, 1, parseInt(soLuongBans[i]));
+        }
+        var options = {
+            'title': 'Biểu đồ 1',
+            is3D: true
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }
+    function drawChart() {
+        var dataArray = [['Tên sản phẩm', 'Số lượng đã bán']];
+        $.each(datas, function (i, item) {
+            dataArray.push([item.TenSP, item.SoLuongBan]);
+        });
+
+        var data = new google.visualization.arrayToDataTable(dataArray);
+        var options = {
+            title: 'Biểu đồ 2',
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+
+    }
+    },1);
+</script>

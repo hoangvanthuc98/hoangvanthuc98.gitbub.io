@@ -1,0 +1,67 @@
+﻿@using btl.Models
+@model List<GioHang>
+@{
+    ViewBag.Title = "Giỏ Hàng";
+    Layout = "~/Views/Layout/NguoiDungLayout.cshtml";
+}
+<link href="~/Content/ctSanPham.css" rel="stylesheet" />
+<div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item " aria-current="page"><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+            <li class="breadcrumb-item " aria-current="page"><a href="@Url.Action("XemDanhSachSanPham","SanPham")">Xem Danh Sách Sản Phẩm</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#"></a>Giỏ Hàng</li>
+        </ol>
+    </nav>
+</div>
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>mã sản phẩm</th>
+                <th>tên sản phẩm</th>
+                <th>hình ảnh</th>
+                <th>số lượng</th>
+                <th>đơn giá</th>
+                <th>thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.iMaSP</td>
+                    <td>@item.sTenSP</td>
+                    <td><img src="@Url.Content("~/images/"+item.sHinhAnh)" width="150" height="150" /></td>
+                    @using (Html.BeginForm("SuaGioHang", "GioHang", new { @id = item.iMaSP }))
+                    {
+                        <td width="30%">
+                            <input type="number" name="txtSoLuong" id="txtSoLuong" value="@item.iSoLuong" />
+                            <input type="submit" value="cập nhật"  class="btn btn-primary"/>
+                            @Html.ActionLink("Xóa", "XoaGioHang", new { @id = item.iMaSP})
+                        </td>
+                    }
+                    <td>@String.Format("{0:0,0}", item.fDonGia) VNĐ</td>
+                    <td>@String.Format("{0:0,0}", item.ThanhTien) VNĐ</td>
+                    <td></td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    @using (Html.BeginForm("HoaDon", "GioHang"))
+                    {
+                        <input type="submit" value="đặt hàng" class="btn btn-primary"/>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<div class="jumbotron"></div>
+
+<script>
+    $(document).ready(function () {
+        console.log($("input[name=txtSoLuong]").val());   
+    });
+</script>

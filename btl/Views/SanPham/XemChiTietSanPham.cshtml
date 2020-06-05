@@ -1,0 +1,92 @@
+﻿@using btl.Models
+@model SanPham
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Views/Layout/NguoiDungLayout.cshtml";
+}
+@{ 
+    Method mt = new Method();
+}
+
+<link href="~/Content/ctSanPham.css" rel="stylesheet" />
+
+<div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item " aria-current="page"><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+            <li class="breadcrumb-item " aria-current="page"><a href="@Url.Action("XemDanhSachSanPham","SanPham")">Xem Danh Sách Sản Phẩm</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#"></a>Xem Chi Tiết Sản Phẩm</li>
+        </ol>
+    </nav>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 section__category p-3 gray">
+            <div class="card">
+                <img class="card-img-top" src="@Url.Content("~/images/"+Model.HinhAnh)" alt="">
+                <div class="card-body">
+                    <p class="card-text">@Model.TenSP</p>
+                    <div class="text-center">                    
+                        @if (Model.KhuyenMai == 0)
+                        {
+                            <p>Giá : @String.Format("{0:0,0}", @Model.DonGia) VNĐ</p>
+                        }
+                        else
+                        {
+                            <p>
+                                Giá : <strike style="font-size:10px">@String.Format("{0:0,0}", @Model.DonGia)</strike>
+                                <i style="color:red">@String.Format("{0:0,0}", (@Model.DonGia) - (@Model.DonGia * (@Model.KhuyenMai) / 100)) VNĐ</i>
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div>
+                <h1>Thông số kĩ thuật</h1>
+                @{ 
+                    var thongso = mt.GetTsspById(Model.MaSP);
+                    <ul class="thongso">
+                        @foreach(var i in thongso)
+                        {
+                            var ten = mt.GetTsktById(i.MaTSKT);
+                            <li><span>@ten.TenTSKT</span>  :  @i.GiaTri</li>
+                        }
+                    </ul>
+
+                }
+            </div>
+            
+        </div>
+    </div>
+    @using (Html.BeginForm("ThemGioHang", "GioHang", new { @id = Model.MaSP, @strUrl = Request.Url.ToString() }))
+    {
+        <input type="submit" class="btn btn-group btn-success" id="add" value="Thêm vào giỏ hàng" />
+    }
+    <br />
+    <br />
+    <div class="section__category p-3 gray">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="comment">Nhận xét:</label>
+                    <textarea class="form-control" rows="2" cols="50" id="comment" style="max-width:700px"></textarea>
+                </div>
+                <div class="col-md-2">
+                    <label for="pwd">Tên:</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="pwd">Email:</label>
+                    <input type="text" class="form-control">
+                    <button type="submit" class="btn btn-info">Gửi nhận xét</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    
+</div>
+

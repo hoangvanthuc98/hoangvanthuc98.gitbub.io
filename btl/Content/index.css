@@ -1,0 +1,157 @@
+﻿*{
+    margin:0;
+    padding:0;
+}
+body{
+    overflow-x:hidden;
+}
+.carousel-inner img {
+    width: 100%;
+    height: 100%;
+}
+.logo{
+    height:120px;
+}
+.logo .anh{
+    width:130px;float:left;
+    margin-left:20px;
+    margin-right:120px
+}
+.logo .anh img{
+    width:90px;
+    height:120px;
+}
+#timkiem{
+    width:445px;
+}
+.thanhchon{
+    margin:80px;
+}
+.orange{
+    background-color:#FFC107;
+}
+
+.vien {
+    height: 30px;
+    border-left: 10px solid orange;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    padding-left: 15px;
+    display: inline-block;
+    color: blue;
+    font-size: 20px;
+
+}
+.vien.left{
+    margin-left:207px;
+}
+#card {
+    text-transform: uppercase;
+    text-align: center;
+    background-color: orange;
+    font-size: 16px;
+}
+.container-fluit{
+    margin-left:35px;
+}
+.chudam{
+    text-transform:uppercase;
+    font-size:15px;
+    font-weight:bold;
+}
+#gioithieu {
+    
+    border-radius: 1px;
+  box-shadow: 0px 0px 0px 2px orange;      
+    width: 350px;
+    height: 150px;
+    margin: 10px;
+}
+
+#gioithieuLeft {
+    float: left;
+    font-size: 40px;
+    text-align: center;
+    padding-top:20px;
+    width: 100px;
+    height: 80px;
+    border-right: 1px dashed orange ;
+    vertical-align: auto;
+    display: block;
+    margin-top:20px;
+}
+
+#gioithieuRight {
+    float: right;
+    width: 200px;
+    height: 150px;
+    padding-top:20px;
+}
+.none{
+    float:none;
+    margin:70px;
+}
+.tt{
+    border-bottom:1px solid blue;
+    text-transform:uppercase;
+}
+.row{
+    min-width:800px;  
+}
+.dropdown-menu {    
+min-width: 400px;
+}
+.card-img-bottom{
+    width:100%;
+}
+.dropdown-menu.columns-2 {  
+min-width: 800px;
+}
+
+.dropdown-menu li a {/* padding: 5px 15px; */}
+.multi-column-dropdown {
+    list-style: none;
+    padding-top: 5px;
+    padding-right: 0px;
+    padding-bottom: 5px;
+    padding-left: 0px;
+    width: 100%;
+    font-size: 15px;/* border-right:dotted 1px red; */}
+.multi-column-dropdown li a {
+    display: block;
+    clear: both;
+    line-height: 1.428571429;
+    color: #333;
+    white-space: normal;/* padding-top: 5px; *//* padding-right: 15px; *//* padding-bottom: 5px; */
+    padding-left: 15px;}
+.multi-column-dropdown li a:hover { 
+text-decoration: none;  
+color: #262626; 
+background-color: #f5f5f5;
+} 
+@media (max-width: 800px) { 
+.dropdown-menu.multi-column { 
+min-width: 400px !important; 
+overflow-x: hidden;
+}
+}
+.footer{
+    background-color:orange;
+    
+}
+.ft{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.nav-item a{
+    color:black;
+}
+.mn{
+    margin-right:50px!important;
+}
+
+
+
+
+

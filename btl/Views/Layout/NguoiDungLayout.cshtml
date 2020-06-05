@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/index.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script src="~/Assets/plugins/notifyjs/js/notify.js"></script>
+    <script src="~/Assets/plugins/notifications/notify.min.js"></script>
+    <script src="~/Assets/plugins/notifications/style.js"></script>
+</head>
+<body> 
+    @if (@TempData["Message"] != null)
+    {
+        <script>
+            $.notify('@Html.Raw(@TempData["Message"])', {
+                style: 'notify',
+                className: '@TempData["Type"]',
+            });
+        </script>
+    }
+    <div style="position:relative">
+        <nav class="navbar navbar-expand-sm justify-content-end logo">
+            <div class="anh">
+                <img src="~/images/tecotec.png">
+            </div>
+            <div>
+                @using (Html.BeginForm("KetQuaTimKiem", "TimKiem",FormMethod.Post))
+                {
+                    <div class="input-group" id="timkiem">
+
+                        <input name="txttimkiem" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">tìm kiếm</button>
+                        </div>
+                    </div> 
+                }
+            </div>
+            <div class="thanhchon">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link  text-body" href="@Url.Action("Index","ThongBao")"><i class="text-warning fas fa-bell"></i> thông báo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-body" href="@Url.Action("DonHang","DonHang")"><i class="text-warning fas fa-bath"></i> đơn hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-body" href="@Url.Action("GioHang","Giohang")">
+                            <i class="text-warning fas fa-check">
+                            </i> giỏ hàng <span class="badge badge-light">@Html.Action("GioHangPartial", "GioHang")</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        @Html.Action("tkPartial", "TaiKhoan")
+                        @*<a class="nav-link text-body" href="@Url.Action("DangNhap","TaiKhoan")"><i class="text-warning fas fa-award"></i> đăng nhập</a>*@
+                    </li>
+                    
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <!-- menu -->
+    <div class="orange">
+        <div class="container">
+            <nav class="navbar navbar-expand-sm text-danger">
+                <ul class="navbar-nav">
+                    <li class="nav-item mn">
+                        <a class="nav-link" href="@Url.Action("Index","Home")">Trang Chủ</a>
+                    </li>
+                    <!-- Dropdown -->
+                    <li class="nav-item dropdown mn">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            Thiết bị đo và hiệu chuẩn
+                        </a>
+                        <div class="dropdown-menu">
+                            @Html.Action("MenuPatial", "Home")
+                        </div>
+                    </li>  
+                    <li class="nav-item mn">
+                        <a class="nav-link" href="@Url.Action("Index","SoSanhSanPham")">So sánh sản phẩm</a>
+                    </li>                 
+                    <li class="nav-item mn">
+                        <a class="nav-link" href="@Url.Action("GPKT","Home")">Giải pháp kĩ thuật</a>
+                    </li>
+                    <li class="nav-item mn">
+                        <a class="nav-link" href="@Url.Action("Index","TinTuc")">Tin tức và sự kiện</a>
+                    </li>
+                                                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    @RenderBody()
+
+
+    <div>
+        <img src="~/images/sptb1.png" width="100%" height="100px" alt="">
+    </div>
+    <br />
+    <div></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div id="gioithieu">
+                    <div id="gioithieuLeft" class="fa fa-phone-square text-warning"></div>
+                    <div id="gioithieuRight">
+                        <b> Tổng đài hỗ trợ</b><br /><span style="font-size:25px;color:orange">09876543201</span><br />(miễn phí)
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div id="gioithieu">
+                    <div id="gioithieuLeft" class="fa fa-envelope-open text-warning"></div>
+                    <div id="gioithieuRight">
+                       <b> Dịch vụ bán hàng</b><br />
+                        phanphoi@gmail.com
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div id="gioithieu">
+                    <div id="gioithieuLeft" class="fa fa-comments text-warning"></div>
+                    <div id="gioithieuRight">Bộ phận chăm sóc khách hàng giải đáp những thắc mắc của bạn</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="container-fluit">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="chudam">Hỗ trợ khách hàng</div>
+                <ul class="list-unstyled">
+                    <li>hướng dẫn đặt hàng</li>
+                    <li>giải đáp thắc mắc</li>
+                </ul>
+                <div class="chudam">Chứng nhận bởi</div>
+                <div>
+                    <img src="~/images/cn1.png" width="80" height="30" alt="" />
+                    <img src="~/images/cn2.png" width="80" height="30" alt="" />
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="chudam">Về chúng tôi</div>
+                <ul class="list-unstyled">
+                    <li>giới thiệu</li>
+                    <li>tuyển dụng</li>
+                    <li>bảo mật</li>
+                    <li>điều khoản</li>
+                 
+                </ul>
+
+            </div>
+            <div class="col-sm-2">
+                <div class="chudam">Liên kết</div>
+                <ul class="list-unstyled">
+                    <li>đăng nhập</li>
+                    <li>đăng ký</li>
+                    <li>liên kết</li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <div class="chudam">Thông tin liên hệ</div>
+                <ul class="list-unstyled">
+                    <li>Liên hệ</li>
+                    
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <div class="chudam">Bản đồ chỉ dẫn</div>
+                <img src="~/images/bd1.png" width="350" height="250" />
+            </div>
+        </div>
+
+    </div>
+    <div class="footer"> 
+        <div class="ft"> &copy; Hoàng Văn Thực - MSV: 1141360158</div>
+        <div class="ft">KTPM2 - K11 - HaUI</div>
+   </div>
+</body>
+</html>

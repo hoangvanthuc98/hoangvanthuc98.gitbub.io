@@ -1,0 +1,97 @@
+﻿@using btl.Models;
+@*@using PagedList.Mvc;
+    @model PagedList.PagedList<SanPham>*@
+@model List<SanPham>
+@{
+    ViewBag.Title = "So sánh sản phẩm";
+    Layout = "~/Views/Layout/NguoiDungLayout.cshtml";
+}
+<link href="~/Content/ssSanPham.css" rel="stylesheet" />
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{Method mt = new Method();
+    var list = mt.GetListLoaiSP();
+}
+
+<div class="container">
+    <div class="noidung">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="input-group tk" id="timkiem">
+                    <input id="txttimkiem" name="txttimkiem" type="text" class="form-control" placeholder="Chọn sản phẩm">
+                </div>
+                
+            </div>
+
+            <div class="col-md-3">
+                @using (@Html.BeginForm("SoSanh","SoSanhSanPham"))
+                {
+                    <div class="input-group" id="">
+                        <input type="hidden" class="form-control" id="sanPham" name="sanPham">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit">So sánh sản phẩm</button>
+                        </div>
+                    </div> 
+                }
+            </div>
+
+        </div>
+        <div id="sp">
+
+            <img id="loading" src="~/Content/loading.gif" style="display:none;padding-left:300px;"/>
+            @*@foreach (var item in Model)
+                {
+                    <div class="card" data-id="@item.MaSP" onclick="getSanPham(this)">
+                        <img class="Imgsuccess" src="~/Content/ok.jpg" />
+                        <img class="card-img-top" src="@Url.Content("~/images/"+ item.HinhAnh)" alt="">
+                        <div class="card-body">
+                            <p class="card-text">@item.TenSP</p>
+                            <div class="text-center">
+                                <div class="btn-group">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }*@
+        </div>
+
+    </div>
+    <div style="clear:both"></div>
+</div>
+<script>
+    function getSanPham(t) {
+        var id = $(t).data('id');
+        var sanPham = $('#sanPham').val();
+        if (sanPham.indexOf(id) < 0) {
+            $(t).find('.Imgsuccess').css('display', 'block');
+            $('#sanPham').val(sanPham + id + ",");
+        } else {
+            $(t).find('.Imgsuccess').css('display', 'none');
+            $('#sanPham').val(sanPham.replace(id + ",", ''));
+        }  
+    } 
+    console.log($('#sanPham').val());
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="~/Scripts/tk.js"></script>
+
+
+@*<script>
+        $(document).ready(function () {
+            function Contains(s, t) {
+                if (s.indexOf(t) != -1)
+                    return true;
+            }
+            $('#txttimkiem').keyup(function () {
+                var text = $('#txttimkiem').val().toLowerCase();
+                $('.card').each(function () {
+                    if (!Contains($(this).text().toLowerCase(), text)) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
+                });
+            });
+        });
+    </script>*@

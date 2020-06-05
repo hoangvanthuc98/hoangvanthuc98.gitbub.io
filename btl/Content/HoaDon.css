@@ -1,0 +1,47 @@
+﻿.title{
+    border-bottom:1px solid;
+    height:70px;
+    display: flex;
+    align-items:center;
+}
+.l-3{
+   width:100px;
+   float:left;
+}
+.l-1{
+    width:100px;
+    float:left;
+}
+.l-30{
+   width:300px;
+   float:left;
+}
+.l-15{
+    width:150px;
+    float:left;
+}
+.l-2{
+    width:200px;
+    float:left;
+}
+.w{
+    min-height:60px;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+}
+.hd:hover{
+    box-shadow: 6px 10px 18px 5px #888888 ;
+}
+.hd{
+    border-bottom:1px solid;
+}
+.container{
+    margin-bottom:50px;
+}
+.h{
+    visibility:hidden;
+}
+.cl{
+    clear:both;
+}

@@ -1,0 +1,19 @@
+﻿@using btl.Models;
+@model List<SanPham>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <div class="card" data-id="@item.MaSP" onclick="getSanPham(this)">
+            <img class="Imgsuccess" src="~/Content/ok.jpg" />
+            <img class="card-img-top" src="@Url.Content("~/images/"+ item.HinhAnh)" alt="">
+            <div class="card-body">
+                <p class="card-text">@item.TenSP</p>
+                <div class="text-center">
+                    <div class="btn-group">
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

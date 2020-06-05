@@ -1,0 +1,114 @@
+﻿@using btl.Models
+@model btl.Models.SanPham
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+    dbtecotecEntities db = new dbtecotecEntities();
+    var lst = db.ThongSoSanPhams.Where(l => l.MaSP == Model.MaSP).ToList();
+    var maso = Model.MaSP;
+}
+
+<link href="~/Assets/plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" />
+<div style="margin-left:150px">
+    <h4>Sản phẩm : @Model.TenSP</h4>
+    <hr />
+    <p>
+        @Html.ActionLink("Thêm mới thông số ", "CreateThongSo", new { id = maso})
+    </p>
+    <table width="50%" style="text-align:center">
+        <tr>
+            <th>Tên Thông Số</th>
+            <th>Giá Trị</th>
+            <th></th>
+            <th></th>
+        </tr>
+        @{
+
+            foreach (var item in lst)
+            {
+                <tr>
+                    <td>
+                        @item.ThongSoKiThuat.TenTSKT
+                    </td>
+                    @using (Html.BeginForm("EditThongSo", "SanPhamAdmin", new { id = Model.MaSP, maTS = item.MaTSKT, url = Request.Url.ToString() }))
+                    {
+                        <td>
+                            @Html.TextBox("txtgiatri", item.GiaTri)
+                        </td>
+                        <td>
+                            <input type="submit" value="Sửa" />
+                        </td>
+
+                    }
+
+                    @*@using (Html.BeginForm("DeleteThongSo", "SanPhamAdmin", new { id = Model.MaSP, maTS = item.MaTSKT, url = Request.Url.ToString() }))
+                    {*@
+                        <td>
+                            @*<input type="submit" value="Xóa" />*@
+                            <a href="#" onclick="btn_delete('@Model.MaSP','@item.MaTSKT','@Request.Url.ToString()')">Xóa</a>
+                        </td>
+                    @*}*@
+                </tr>
+            }
+        }
+    </table>
+
+</div>
+<p>
+    @Html.ActionLink("<-- Quay lại", "Index")
+</p>
+<script src="~/Assets/plugins/notifications/notify.min.js"></script>
+<script src="~/Assets/plugins/notifications/style.js"></script>
+<script src="~/Assets/plugins/notifyjs/js/notify.js"></script>
+<script src="~/Assets/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
+<script src="~/Assets/pages/jquery.sweet-alert.init.js"></script>
+<script>
+    function btn_delete(station_id, station_id1, station_id2) {
+        swal({
+            title: "Chú ý !!! ",
+            text: "Bạn thực sự muốn xóa thông số này ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Xóa",
+            cancelButtonText: "Hủy",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "/SanPhamAdmin/DeleteThongSo",
+                    type: "POST",
+                    data: {
+                        id: station_id,
+                        maTS: station_id1,
+                    },
+                    success: function (data) {
+                        if (data == "True" || data == "true" || data == true) {
+                            setTimeout(function () {
+                                window.location.href = station_id2;
+                            }, 1500);
+                        } else {
+                            //$.notify('Xóa không thành công !', {
+                            //    style: 'notify',
+                            //    className: 'error'
+                            //});
+                        }
+
+                    },
+                    error: function (xhr, status) {
+                        //$.notify('Xóa không thành công !', {
+                        //    style: 'notify',
+                        //    className: 'error'
+                        //});
+                    }
+                });
+                swal.close();
+            } else {
+                swal.close();
+            }
+        });
+    }
+</script>
+

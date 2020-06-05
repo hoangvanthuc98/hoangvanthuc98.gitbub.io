@@ -1,0 +1,45 @@
+﻿@using btl.Models
+@model btl.Models.HoaDon
+@{
+    ViewBag.Title = "Chi tiết hóa đơn";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+    dbtecotecEntities db = new dbtecotecEntities();
+    var lst = db.ChiTietHoaDons.Where(n => n.MaHD == Model.MaHD).ToList();
+    Method mt = new Method();
+    double tongtien = 0;
+}
+<p>Mã hóa đơn : @Model.MaHD</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Tên Sản phẩm</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">đơn giá</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in lst)
+        {
+            tongtien += item.SoLuong * item.DonGia;
+            var sp = mt.GetSanPhamById(item.MaSP);
+            <tr>
+                <th scope="row"></th>
+                <td>@sp.TenSP</td>
+                <td>@item.SoLuong</td>
+                <td>@String.Format("{0:0,0}", item.DonGia)&nbsp<u><i>đ</i></u></td>
+            </tr>
+        }
+        <tr>
+            <th scope="row"></th>
+            <td></td>
+            <td></td>
+            <td>Tổng tiền : @String.Format("{0:0,0}", tongtien)&nbsp<u><i>đ</i></u></td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    @Html.ActionLink("<-- Quay lại", "Index")
+</p>
+
+
